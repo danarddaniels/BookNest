@@ -90,7 +90,6 @@ function BookList() {
 				if (Array.isArray(data)) {
 					setBooks(data);
 				} else {
-					console.log('Books response was not an array:', data);
 					setBooks([]);
 				}
 			})
