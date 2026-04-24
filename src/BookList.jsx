@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './BookList-styles.css';
-
 
 function BookList() {
 	const API_URL = import.meta.env.VITE_API_URL;
@@ -15,17 +14,17 @@ function BookList() {
 	const [updateReadPage, setUpdateReadPage] = useState(true);
 	const [showEditPages, setShowEditPages] = useState(false);
 
-
 	function handlePageCalc(selectedBook) {
-		let calc = Math.floor(
+		let calc =
+			Math.floor(
 				(selectedBook.readPages /
 					(selectedBook.remainingPages || selectedBook.endPage)) *
 					100,
 			) + '%';
 
-		if(parseInt(calc)>= 100){
-			selectedBook.completed = "Yes"
-			return
+		if (parseInt(calc) >= 100) {
+			selectedBook.completed = 'Yes';
+			return;
 		}
 		return calc;
 	}
@@ -55,9 +54,18 @@ function BookList() {
 		setReadPages('');
 	}
 
-	function deleteBook(bookId) {
-		setBooks((prevBooks) => prevBooks.filter((book) => book.id !== bookId));
-		setSelectedBook(null);
+	async function deleteBook(bookId) {
+		try {
+			await fetch(`${API_URL}/books/${bookId}`, {
+				method: 'DELETE',
+				credentials: 'include',
+			});
+
+			setBooks((prevBooks) => prevBooks.filter((book) => book._id !== bookId));
+			setSelectedBook(null);
+		} catch (err) {
+			console.log(err);
+		}
 	}
 
 	function openPopup() {
@@ -73,6 +81,19 @@ function BookList() {
 		setCompleted('');
 		// editButton.textContent = 'Edit Pages';
 	}
+
+	useEffect(() => {
+		fetch(`${API_URL}/books`, {
+			credentials: 'include', // VERY IMPORTANT
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				setBooks(data);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
 
 	async function addBook(e) {
 		e.preventDefault();
@@ -124,7 +145,18 @@ function BookList() {
 				cover: './src/assets/book-placeholder2.png',
 			};
 
-			setBooks([newBook, ...books]);
+			const res = await fetch(`${API_URL}/books`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include',
+				body: JSON.stringify(newBook),
+			});
+
+			const savedBook = await res.json();
+
+			setBooks([savedBook, ...books]);
 		}
 
 		closePopup();
@@ -155,7 +187,7 @@ function BookList() {
 										<p>Author: {selectedBook.author}</p>
 										<div className='pages'>
 											<p>
-											    Completed:{' '}
+												Completed:{' '}
 												{selectedBook.completed === 'No'
 													? handlePageCalc(selectedBook)
 													: selectedBook.completed}
@@ -185,7 +217,7 @@ function BookList() {
 								<div className='buttons'>
 									<button
 										class='deleteBook'
-										onClick={() => deleteBook(selectedBook.id)}
+										onClick={() => deleteBook(selectedBook._id)}
 									>
 										Delete Book
 									</button>
