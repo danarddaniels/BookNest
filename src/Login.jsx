@@ -39,7 +39,8 @@ function Login() {
 	};
 	return (
 		<div>
-			<div className='d-flex justify-content-center align-items-center bg-secondary vh-100'>
+			<div className='d-flex justify-content-center align-items-center bg-secondary vh-100 body'>
+				<h1>Welcome to Book Nest!<br/> <span>Your personal book-tracking app</span> </h1>
 				<div className='bg-white p-3 rounded login-box'>
 					<h2>Login</h2>
 					<p>Please enter username and password:</p>
