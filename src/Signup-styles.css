@@ -20,7 +20,7 @@ label {
 	background-color: #f47438;
 }
 
-@media screen and (width <= 650) {
+@media screen and (width <= 650px) {
 	.signin-box {
 		width: 100vw;
 	}
