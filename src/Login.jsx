@@ -42,6 +42,8 @@ function Login() {
 			<div className='d-flex justify-content-center align-items-center bg-secondary vh-100'>
 				<div className='bg-white p-3 rounded login-box'>
 					<h2>Login</h2>
+					<p>Please enter username and password:</p>
+					<p>You can also enter the provided email and password or Sign up!</p>
 					<form onSubmit={handleSubmit}>
 						<div className='mb-3'>
 							<label htmlFor='email'>

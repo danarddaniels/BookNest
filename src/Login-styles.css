@@ -8,6 +8,14 @@ label {
 	font-family: 'Quicksand', sans-serif;
 }
 
+h2{
+	color: #ff9a6a;
+}
+
+p{
+	color: #595a5c;
+}
+
 .login-box {
 	width: 50%;
 }
