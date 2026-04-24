@@ -1,0 +1,32 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand:wght@300..700&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+
+body{
+  font-family: 'Roboto', serif;
+}
+
+label{
+  font-family: 'Quicksand', sans-serif;
+}
+
+.login-box {
+	width: 100%;
+	max-width: 100%;
+	margin: 5rem;
+}
+
+.btn-success {
+	background-color: #ff9a6a;
+}
+
+.btn-success:hover {
+	background-color: #f47438;
+}
+
+@media screen and (width <= 650px) {
+	.login-box {
+		width: 100vw;
+	}
+}
