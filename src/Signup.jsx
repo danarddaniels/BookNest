@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import axios from 'axios';
+
 import { useNavigate } from 'react-router-dom';
 import './Signup-styles.css';
 
@@ -10,22 +10,36 @@ function Signup() {
 	const [password, setPassword] = useState('');
 	const navigate = useNavigate();
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		const API_URL = import.meta.env.VITE_API_URL;
 		e.preventDefault();
-		axios
-			.post(`${API_URL}/user/register`, { name, email, password })
-			.then((result) => {
-				console.log(result);
-				console.log(result.ok);
-				if (result.data.status === 'SUCCESS') {
-					alert(result.data.message);
-					navigate('/');
-				} else {
-					alert(result.data.message);
-				}
-			})
-			.catch((err) => console.log(err));
+
+		try {
+			const response = await fetch(`${API_URL}/user/register`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include',
+				body: JSON.stringify({
+					name,
+					email,
+					password,
+				}),
+			});
+
+			const result = await response.json();
+
+			if (result.status === 'SUCCESS' || result.success) {
+				alert(result.message);
+				navigate('/');
+			} else {
+				alert(result.message || 'Registration failed');
+			}
+		} catch (err) {
+			console.log(err);
+			alert('Registration failed');
+		}
 	};
 
 	return (

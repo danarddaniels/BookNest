@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
-import axios from 'axios';
+
 import { useNavigate } from 'react-router-dom';
 import './Login-styles.css';
 
@@ -14,16 +14,27 @@ function Login() {
 		e.preventDefault();
 
 		try {
-			const result = await axios.post(`${API_URL}/user/login`, {
-				email,
-				password
+			const response = await fetch(`${API_URL}/user/login`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				credentials: 'include',
+				body: JSON.stringify({
+					email,
+					password,
+				}),
 			});
 
-			if (result.data.success) {
+			const result = await response.json();
+
+			if (result.success) {
 				navigate('/home');
+			} else {
+				alert(result.message || 'Login failed');
 			}
 		} catch (err) {
-			alert(err.response?.data?.message || 'Login failed');
+			alert('Login failed');
 		}
 	};
 	return (
