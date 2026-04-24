@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import './BookList-styles.css';
+import { applyDefaults } from '../../backend/UserSchema';
 
 function BookList() {
+	const API_URL = import.meta.env.VITE_API_URL;
 	const [showPopup, setShowPopup] = useState(false);
 	const [books, setBooks] = useState([]);
 	const [title, setTitle] = useState('');
@@ -92,7 +94,7 @@ function BookList() {
 
 		try {
 			const response = await fetch(
-				`http://localhost:3000/api/books?title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}`,
+				`${API_URL}/api/books?title=${encodeURIComponent(title)}&author=${encodeURIComponent(author)}`,
 			);
 
 			const data = await response.json();

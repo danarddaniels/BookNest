@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login-styles.css';
 function Login() {
+	const API_URL = import.meta.env.VITE_API_URL;
 	const [password, setPassword] = useState('');
 	const [email, setEmail] = useState('');
 	const navigate = useNavigate();
@@ -12,7 +13,7 @@ function Login() {
 		e.preventDefault();
 
 		try {
-			const result = await axios.post('http://localhost:3000/user/login', {
+			const result = await axios.post(`${API_URL}/user/login`, {
 				email,
 				password
 			});

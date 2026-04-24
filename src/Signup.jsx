@@ -11,9 +11,10 @@ function Signup() {
 	const navigate = useNavigate();
 
 	const handleSubmit = (e) => {
+		const API_URL = import.meta.env.VITE_API_URL;
 		e.preventDefault();
 		axios
-			.post('http://localhost:3000/user/register', { name, email, password })
+			.post(`${API_URL}/user/register`, { name, email, password })
 			.then((result) => {
 				console.log(result);
 				console.log(result.ok);
