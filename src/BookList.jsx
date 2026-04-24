@@ -79,7 +79,6 @@ function BookList() {
 		setReadPages('');
 		setEndPage('');
 		setCompleted('');
-		// editButton.textContent = 'Edit Pages';
 	}
 
 	useEffect(() => {
@@ -88,7 +87,12 @@ function BookList() {
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				setBooks(data);
+				if (Array.isArray(data)) {
+					setBooks(data);
+				} else {
+					console.log('Books response was not an array:', data);
+					setBooks([]);
+				}
 			})
 			.catch((err) => {
 				console.log(err);
@@ -119,8 +123,8 @@ function BookList() {
 			);
 
 			const data = await response.json();
-
 			const bookInfo = data.items?.[0]?.volumeInfo;
+
 			const newBook = {
 				id: Date.now(),
 				title: bookInfo?.title || title,
@@ -131,18 +135,6 @@ function BookList() {
 				cover:
 					bookInfo?.imageLinks?.thumbnail ||
 					'./src/assets/book-placeholder2.png',
-			};
-			setBooks([newBook, ...books]);
-		} catch (err) {
-			// fallback if API fails
-			const newBook = {
-				id: Date.now(),
-				title,
-				author,
-				completed: completed,
-				readPages: parseInt(readPages),
-				remainingPages: parseInt(endPage),
-				cover: './src/assets/book-placeholder2.png',
 			};
 
 			const res = await fetch(`${API_URL}/books`, {
@@ -157,6 +149,20 @@ function BookList() {
 			const savedBook = await res.json();
 
 			setBooks([savedBook, ...books]);
+		} catch (err) {
+			// fallback if API fails
+			const newBook = {
+				id: Date.now(),
+				title,
+				author,
+				completed: completed,
+				readPages: parseInt(readPages),
+				remainingPages: parseInt(endPage),
+				cover: './src/assets/book-placeholder2.png',
+			};
+			const savedBook = await res.json();
+
+			setBooks([savedBook, ...books]);
 		}
 
 		closePopup();
@@ -166,14 +172,15 @@ function BookList() {
 		<div className='booklist-page'>
 			<section id='book-container'>
 				<ul id='books'>
-					{books.map((book) => (
-						<li
-							key={book.id}
-							className='book'
-							style={{ backgroundImage: `url(${book.cover})` }}
-							onClick={() => handleBookClick(book)}
-						></li>
-					))}
+					{Array.isArray(books) &&
+						books.map((book) => (
+							<li
+								key={book._id || book.id}
+								className='book'
+								style={{ backgroundImage: `url(${book.cover})` }}
+								onClick={() => handleBookClick(book)}
+							></li>
+						))}
 
 					{selectedBook && (
 						<div className='popup-overlay'>
