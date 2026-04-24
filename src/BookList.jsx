@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './BookList-styles.css';
-import { applyDefaults } from '../../backend/UserSchema';
+
 
 function BookList() {
 	const API_URL = import.meta.env.VITE_API_URL;
