@@ -56,12 +56,22 @@ function BookList() {
 
 	async function deleteBook(bookId) {
 		try {
-			await fetch(`${API_URL}/books/${bookId}`, {
+			const token = localStorage.getItem('token');
+
+			const res = await fetch(`${API_URL}/books/${bookId}`, {
 				method: 'DELETE',
 				headers: {
 					Authorization: `Bearer ${token}`,
 				},
 			});
+
+			const data = await res.json();
+			console.log('delete response:', data);
+
+			if (!res.ok) {
+				alert(data.message || 'Failed to delete book');
+				return;
+			}
 
 			setBooks((prevBooks) => prevBooks.filter((book) => book._id !== bookId));
 			setSelectedBook(null);
@@ -242,7 +252,7 @@ function BookList() {
 								</div>
 								<div className='buttons'>
 									<button
-										class='deleteBook'
+										className='deleteBook'
 										onClick={() => deleteBook(selectedBook._id)}
 									>
 										Delete Book
