@@ -83,13 +83,14 @@ function BookList() {
 
 	useEffect(() => {
 		fetch(`${API_URL}/books`, {
-			methond: 'GET',
-			credentials: 'include', // VERY IMPORTANT
+			method: 'GET',
+			credentials: 'include',
 		})
 			.then((res) => res.json())
+
 			.then((data) => {
-				if (Array.isArray(data)) {
-					setBooks(data);
+				if (data.success) {
+					setBooks(data.books);
 				} else {
 					setBooks([]);
 				}
