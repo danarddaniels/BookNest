@@ -166,7 +166,7 @@ function BookList() {
 
 			const savedBook = await res.json();
 
-			setBooks([savedBook.book, ...books]);
+			setBooks([savedBook, ...books]);
 		} catch (err) {
 			// fallback if API fails
 			const newBook = {
@@ -191,7 +191,7 @@ function BookList() {
 			});
 			const savedBook = await res.json();
 
-			setBooks([savedBook.book, ...books]);
+			setBooks([savedBook, ...books]);
 		}
 
 		closePopup();
