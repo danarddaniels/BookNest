@@ -58,7 +58,9 @@ function BookList() {
 		try {
 			await fetch(`${API_URL}/books/${bookId}`, {
 				method: 'DELETE',
-				credentials: 'include',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
 			});
 
 			setBooks((prevBooks) => prevBooks.filter((book) => book._id !== bookId));
@@ -154,7 +156,7 @@ function BookList() {
 
 			const savedBook = await res.json();
 
-			setBooks([savedBook, ...books]);
+			setBooks([savedBook.book, ...books]);
 		} catch (err) {
 			// fallback if API fails
 			const newBook = {
@@ -166,9 +168,20 @@ function BookList() {
 				remainingPages: parseInt(endPage),
 				cover: './src/assets/book-placeholder2.png',
 			};
+
+			const token = localStorage.getItem('token');
+
+			const res = await fetch(`${API_URL}/books`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(newBook),
+			});
 			const savedBook = await res.json();
 
-			setBooks([savedBook, ...books]);
+			setBooks([savedBook.book, ...books]);
 		}
 
 		closePopup();
