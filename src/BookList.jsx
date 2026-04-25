@@ -66,7 +66,6 @@ function BookList() {
 			});
 
 			const data = await res.json();
-			console.log('delete response:', data);
 
 			if (!res.ok) {
 				alert(data.message || 'Failed to delete book');
