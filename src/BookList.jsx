@@ -178,19 +178,23 @@ function BookList() {
 				cover: './src/assets/book-placeholder2.png',
 			};
 
-			const token = localStorage.getItem('token');
-
-			const res = await fetch(`${API_URL}/books`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify(newBook),
-			});
-			const savedBook = await res.json();
-
-			setBooks([savedBook, ...books]);
+			try {
+				const token = localStorage.getItem('token');
+				const res = await fetch(`${API_URL}/books`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify(newBook),
+				});
+				const savedBook = await res.json();
+				setBooks([savedBook, ...books]);
+			} catch (serverErr) {
+				console.log('Server is offline:', serverErr);
+				// temporary local-only book
+				setBooks([newBook, ...books]);
+			}
 		}
 
 		closePopup();

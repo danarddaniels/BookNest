@@ -11,6 +11,8 @@ body {
 	/* background: linear-gradient(135deg, #f5f5f5, #e8e8e8); */
 }
 
+
+
 #books {
 	list-style: none;
 	display: flex;
@@ -218,5 +220,8 @@ li.book:hover {
 		width: 100vw;
 	}
 
-
+	#books{
+		display: flex;
+		justify-content: center;
+	}
 }
