@@ -1,8 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Home-styles.css';
 import BookList from './BookList';
 
 function Home() {
+	const navigate = useNavigate();
+	const handleLogout = () => {
+		localStorage.removeItem('token');
+		navigate('/');
+	};
+
 	return (
 		<div>
 			<header>
@@ -16,7 +22,7 @@ function Home() {
 							<Link to='/home'>Wishlist</Link>
 						</li>
 						<li>
-							<Link to='/'>Logout</Link>
+							<Link to='/' onClick={handleLogout}>Logout</Link>
 						</li>
 					</ul>
 				</nav>

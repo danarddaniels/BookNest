@@ -82,15 +82,25 @@ function BookList() {
 	}
 
 	useEffect(() => {
+		const token = localStorage.getItem('token');
+
 		fetch(`${API_URL}/books`, {
 			method: 'GET',
-			credentials: 'include',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
 		})
 			.then((res) => res.json())
 			.then((data) => {
-				setBooks(data.books || []);
+				if (data.success) {
+					setBooks(data.books);
+				} else {
+					setBooks([]);
+				}
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err);
+			});
 	}, []);
 
 	async function addBook(e) {
@@ -131,12 +141,14 @@ function BookList() {
 					'./src/assets/book-placeholder2.png',
 			};
 
+			const token = localStorage.getItem('token');
+
 			const res = await fetch(`${API_URL}/books`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${token}`,
 				},
-				credentials: 'include',
 				body: JSON.stringify(newBook),
 			});
 

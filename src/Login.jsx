@@ -13,34 +13,37 @@ function Login() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
+		const API_URL = import.meta.env.VITE_API_URL;
+
 		try {
 			const response = await fetch(`${API_URL}/user/login`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				credentials: 'include',
-				body: JSON.stringify({
-					email,
-					password,
-				}),
+				body: JSON.stringify({ email, password }),
 			});
 
 			const result = await response.json();
 
 			if (result.success) {
+				localStorage.setItem('token', result.token);
 				navigate('/home');
 			} else {
-				alert(result.message || 'Login failed');
+				alert(result.message);
 			}
 		} catch (err) {
+			console.log(err);
 			alert('Login failed');
 		}
 	};
 	return (
 		<div>
 			<div className='d-flex justify-content-center align-items-center bg-secondary vh-100 body'>
-				<h1>Welcome to Book Nest!<br/> <span>Your personal book-tracking app</span> </h1>
+				<h1>
+					Welcome to Book Nest!
+					<br /> <span>Your personal book-tracking app</span>{' '}
+				</h1>
 				<div className='bg-white p-3 rounded login-box'>
 					<h2>Login</h2>
 					<p>Please enter username and password:</p>
