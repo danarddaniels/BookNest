@@ -83,6 +83,7 @@ function BookList() {
 
 	useEffect(() => {
 		fetch(`${API_URL}/books`, {
+			methond: 'GET',
 			credentials: 'include', // VERY IMPORTANT
 		})
 			.then((res) => res.json())
