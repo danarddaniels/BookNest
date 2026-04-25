@@ -87,17 +87,10 @@ function BookList() {
 			credentials: 'include',
 		})
 			.then((res) => res.json())
-
 			.then((data) => {
-				if (data.success) {
-					setBooks(data.books);
-				} else {
-					setBooks([]);
-				}
+				setBooks(data.books || []);
 			})
-			.catch((err) => {
-				console.log(err);
-			});
+			.catch((err) => console.log(err));
 	}, []);
 
 	async function addBook(e) {
