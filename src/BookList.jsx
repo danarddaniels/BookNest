@@ -238,7 +238,7 @@ function BookList() {
 
 	return (
 		<div className='booklist-page'>
-			{console.log(e.target)}
+			
 			<section className='filter'>
 				<input
 					placeholder='Search title...'
@@ -269,7 +269,9 @@ function BookList() {
 							key={book._id || book.id}
 							className='book'
 							style={{ backgroundImage: `url(${book.cover})` }}
-							onClick={() => handleBookClick(book)}
+							onClick={() => handleBookClick(book), (e)=>{
+								console.log(e.target)
+							}}
 						></li>
 					))}
 
