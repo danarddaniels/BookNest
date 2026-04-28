@@ -43,8 +43,6 @@ function BookList() {
 
 		// sort
 		.sort((a, b) => {
-			if (filters.sort === 'newest') return b.id - a.id; // using Date.now()
-			if (filters.sort === 'oldest') return a.id - b.id;
 			if (filters.sort === 'author-asc') {
 				return (a.author || '').toLowerCase().localeCompare(b.author || '');
 			}
@@ -213,7 +211,7 @@ function BookList() {
 				completed: completed,
 				readPages: parseInt(readPages),
 				remainingPages: parseInt(endPage),
-				cover: './src/assets/book-placeholder2.png',
+				cover: '/book-placeholder2.png',
 			};
 
 			try {
@@ -259,8 +257,6 @@ function BookList() {
 				<select
 					onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
 				>
-					<option value='newest'>Recently Added</option>
-					<option value='oldest'>Oldest</option>
 					<option value='author-asc'>Author (A → Z)</option>
 					<option value='author-desc'>Author (Z → A)</option>
 				</select>
