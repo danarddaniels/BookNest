@@ -14,6 +14,46 @@ function BookList() {
 	const [updateReadPage, setUpdateReadPage] = useState(true);
 	const [showEditPages, setShowEditPages] = useState(false);
 
+	const [filters, setFilters] = useState({
+		search: '',
+		author: '',
+		status: 'all', // 'all' | 'completed' | 'not-completed'
+		sort: 'newest', // 'newest' | 'oldest'
+	});
+
+	const filteredBooks = books
+		// search by title
+		.filter((book) =>
+			book.title.toLowerCase().includes(filters.search.toLowerCase()),
+		)
+
+		// filter by author
+		.filter((book) =>
+			filters.author
+				? book.author.toLowerCase().includes(filters.author.toLowerCase())
+				: true,
+		)
+
+		// completed / not completed
+		.filter((book) => {
+			if (filters.status === 'completed') return book.completed === 'Yes';
+			if (filters.status === 'not-completed') return book.completed === 'No';
+			return true;
+		})
+
+		// sort
+		.sort((a, b) => {
+			if (filters.sort === 'newest') return b.id - a.id; // using Date.now()
+			if (filters.sort === 'oldest') return a.id - b.id;
+			if (filters.sort === 'author-asc') {
+				return (a.author || '').toLowerCase().localeCompare(b.author || '');
+			}
+			if (filters.sort === 'author-desc') {
+				return (b.author || '').toLowerCase().localeCompare(a.author || '');
+			}
+			return 0;
+		});
+
 	function handlePageCalc(selectedBook) {
 		let calc =
 			Math.floor(
@@ -147,9 +187,7 @@ function BookList() {
 				completed: completed,
 				readPages: parseInt(readPages),
 				remainingPages: bookInfo?.pageCount || parseInt(endPage),
-				cover:
-					bookInfo?.imageLinks?.thumbnail ||
-					'./src/assets/book-placeholder2.png',
+				cover: bookInfo?.imageLinks?.thumbnail || '/book-placeholder2.png',
 			};
 
 			const token = localStorage.getItem('token');
@@ -202,17 +240,41 @@ function BookList() {
 
 	return (
 		<div className='booklist-page'>
+			<section className='filter'>
+				<input
+					placeholder='Search title...'
+					onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+				/>
+				<input
+					placeholder='Filter by author...'
+					onChange={(e) => setFilters({ ...filters, author: e.target.value })}
+				/>
+				<select
+					onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+				>
+					<option value='all'>All</option>
+					<option value='completed'>Completed</option>
+					<option value='not-completed'>Not Completed</option>
+				</select>
+				<select
+					onChange={(e) => setFilters({ ...filters, sort: e.target.value })}
+				>
+					<option value='newest'>Recently Added</option>
+					<option value='oldest'>Oldest</option>
+					<option value='author-asc'>Author (A → Z)</option>
+					<option value='author-desc'>Author (Z → A)</option>
+				</select>
+			</section>
 			<section id='book-container'>
 				<ul id='books'>
-					{Array.isArray(books) &&
-						books.map((book) => (
-							<li
-								key={book._id || book.id}
-								className='book'
-								style={{ backgroundImage: `url(${book.cover})` }}
-								onClick={() => handleBookClick(book)}
-							></li>
-						))}
+					{filteredBooks.map((book) => (
+						<li
+							key={book._id || book.id}
+							className='book'
+							style={{ backgroundImage: `url(${book.cover})` }}
+							onClick={() => handleBookClick(book)}
+						></li>
+					))}
 
 					{selectedBook && (
 						<div className='popup-overlay'>
