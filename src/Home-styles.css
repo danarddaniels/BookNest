@@ -18,35 +18,47 @@ body {
 header {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
+
 	border-bottom: 2px solid rgba(255, 255, 255, 0.3);
 	background: #ff9a6abf;
 	backdrop-filter: blur(10px);
-	padding: 20px;
-	width: 100vw;
+
+	/* 👇 responsive padding */
+	padding: clamp(10px, 3vw, 24px);
+
+	/* 👇 safer than 100vw */
+	width: 100%;
+
 	box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* 👇 responsive title */
 h1 {
 	font-family: 'Great Vibes', cursive;
+	font-size: clamp(1.5rem, 4vw, 3rem);
 }
 
-nav {
-	display: flex;
-}
-
+/* 👇 nav spacing scales nicely */
 nav ul {
 	display: flex;
 	list-style: none;
-	gap: 2rem;
+
+	gap: clamp(0.8rem, 2vw, 2rem);
 	align-items: center;
+
 	padding: 0.5rem;
 }
 
+/* 👇 responsive nav text */
 nav ul a {
 	font-family: 'Roboto', sans-serif;
 	text-decoration: none;
 	color: white;
 	font-weight: 500;
+
+	font-size: clamp(0.9rem, 1.5vw, 1.2rem);
+
 	transition: all 0.3s ease;
 }
 
