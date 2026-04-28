@@ -238,7 +238,7 @@ function BookList() {
 
 	return (
 		<div className='booklist-page'>
-			{console.log("hello")}
+			{console.log(e.target)}
 			<section className='filter'>
 				<input
 					placeholder='Search title...'
