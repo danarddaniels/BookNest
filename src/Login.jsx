@@ -84,6 +84,9 @@ function Login() {
 						</button>
 					</form>
 					<p>Don't Have an Account?</p>
+					<p>
+						Sometimes the server takes time to wake up! Just give it a minute.
+					</p>
 					<Link
 						to='/register'
 						className='btn btn-default border w-100 bg-light rounded-0'
